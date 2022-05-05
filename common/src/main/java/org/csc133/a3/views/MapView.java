@@ -19,24 +19,17 @@ public class MapView extends Container {
     Transform worldToND, ndToDisplay, theVTM;
     private Helicopter helicopter;
 
-    public MapView() {
-//        this.gw = gw;
-//        winLeft = 0;
-//        winBottom = 0;
-//        winRight = this.getWidth()/2;
-//        winTop = this.getHeight()/2;
-//        winWidth = winRight - winLeft;
-//        winHeight = winTop - winBottom;
+    public MapView(GameWorld gw) {
+        this.gw = gw;
+        helicopter = new Helicopter(new Point(0,0));
+
     }
 
-    public void init() {
-        helicopter = new Helicopter(new Point(0,0));
-    }
 
     @Override
     public void laidOut() {
-//        gw.setDimension(new Dimension(this.getWidth(), this.getHeight()));
-//        gw.init();
+        gw.setDimension(new Dimension(this.getWidth(), this.getHeight()));
+        gw.init();
     }
 
     @Override
@@ -53,7 +46,7 @@ public class MapView extends Container {
         t.scale(1.5f, 1.5f);
         g.setTransform(t);
 
-        g.setColor(ColorUtil.GRAY);
+        g.setColor(ColorUtil.LTGRAY);
         g.drawLine(-getWidth()/2, 0, getWidth()/2, 0);
         g.drawLine(0, -getHeight()/2, 0, getHeight()/2);
 
@@ -101,27 +94,25 @@ public class MapView extends Container {
         g.setTransform(gXform);
     }
 
-    public void displayTransform(Graphics g) {
+    public void displayTransform(Graphics g){
         Transform gXform = Transform.makeIdentity();
         g.getTransform(gXform);
         gXform.translate(getAbsoluteX(), getAbsoluteY());
 
-        //apply display mapping
+        // apply display mapping
         //
-        gXform.translate(0, getHeight());
-        g.setTransform(gXform);
-        gXform.scale(-1f,-1f);
+        gXform.translate(0,getHeight());
+        gXform.scale(1f,-1f);
 
-        //move the drawing coordinates as part of the "local origin"
+        // move the drawing coordinates as part of the "local origin"
         // transformations
         //
-        gXform.translate(-getAbsoluteX(), -getAbsoluteY());
+        gXform.translate(-getAbsoluteX(),-getAbsoluteY());
         g.setTransform(gXform);
-
     }
 
-//    public void updateLocalTransforms() {
-//        helicopter.updateLocalTransforms();
-//    }
+    public void updateLocalTransforms() {
+        helicopter.updateLocalTransforms();
+    }
 
     }

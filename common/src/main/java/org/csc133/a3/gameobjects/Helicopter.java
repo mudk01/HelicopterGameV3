@@ -5,12 +5,16 @@ import com.codename1.ui.Graphics;
 import com.codename1.ui.geom.Dimension;
 import com.codename1.ui.geom.Point;
 import org.csc133.a3.Game;
+import org.csc133.a3.gameobjects.parts.Arc;
 import org.csc133.a3.interfaces.Steerable;
 
 import java.util.ArrayList;
 
 public class Helicopter extends Moveable implements Steerable {
     private final static int BUBBLE_RADIUS = 125;
+    private final static int ENGINE_BLOCK_WIDTH = (int)(BUBBLE_RADIUS * 1.8);
+    private final static int ENGINE_BLOCK_HEIGHT = ENGINE_BLOCK_WIDTH/3;
+
 
     private int size, hRadius, centerX, centerY, fuel, water;
     private Point helipadCenterLocation, heliLocation;
@@ -19,26 +23,56 @@ public class Helicopter extends Moveable implements Steerable {
     private final int MAX_SPEED = 10;
     private boolean riverCollision;
 
-    private static class HeloBubble extends GameObject {
+
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    private static class HeloBubble extends Arc {
 
         public HeloBubble() {
-            setColor(ColorUtil.YELLOW);
-            setDimension(new Dimension(2*Helicopter.BUBBLE_RADIUS,
-                    2*BUBBLE_RADIUS));
+            super(ColorUtil.MAGENTA,
+                    2*Helicopter.BUBBLE_RADIUS,
+                    2*Helicopter.BUBBLE_RADIUS,
+                    0, (float)(2*Helicopter.BUBBLE_RADIUS*.06),
+                    1,1,
+                    0,
+                    135,270);
+//            setColor(ColorUtil.MAGENTA);
+//            setDimension(new Dimension(2*Helicopter.BUBBLE_RADIUS,
+//                    2*BUBBLE_RADIUS));
+//            translate(0, -getDimension().getHeight()*.06);
+        }
+
+//        @Override
+//        protected void localDraw(Graphics g, Point parentOrigin, Point screenOrigin) {
+//            g.setColor(getColor());
+//            containerTranslate(g, parentOrigin);
+//            cn1ForwardPrimitiveTranslate(g, getDimension());
+//            g.drawArc(0,0, getDimension().getWidth(),
+//                    getDimension().getHeight(), 135, 270);
+//        }
+    }
+
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    private static class HeloEngineBlock extends GameObject {
+
+        public HeloEngineBlock() {
+            setColor(ColorUtil.MAGENTA);
+            setDimension(new Dimension(Helicopter.ENGINE_BLOCK_WIDTH,
+                    Helicopter.ENGINE_BLOCK_HEIGHT));
+
+            translate(0, -getDimension().getHeight()*1.9);
         }
 
         @Override
-        protected void localDraw(Graphics g, Point parentOrigin, Point screenOrigin) {
-//            g.setColor(getColor());
-            g.setColor(ColorUtil.MAGENTA);
+        protected void localDraw(Graphics g, Point parentOrigin,
+                                 Point screenOrigin) {
+            g.setColor(getColor());
             containerTranslate(g, parentOrigin);
             cn1ForwardPrimitiveTranslate(g, getDimension());
-            g.drawArc(0,0, getDimension().getWidth(),
-                    getDimension().getHeight(), 135, 270);
+            g.drawRect(0,0, getDimension().getWidth(),
+                    getDimension().getHeight());
         }
     }
-
-
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     private ArrayList<GameObject> heloParts;
@@ -47,6 +81,7 @@ public class Helicopter extends Moveable implements Steerable {
         heloParts = new ArrayList<>();
 
         heloParts.add(new HeloBubble());
+        heloParts.add(new HeloEngineBlock());
 
     }
 

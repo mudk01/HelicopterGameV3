@@ -20,7 +20,7 @@ public class Game extends Form implements Runnable {
 
     public Game() {
         gw = GameWorld.getInstance();
-        mapView = new MapView();
+        mapView = new MapView(gw);
 //        mapView.getStyle().setBgColor(ColorUtil.rgb(0, 0, 0));
         mapView.getStyle().setBgTransparency(255);
 //        glassCockpit = new GlassCockpit(gw);
@@ -39,7 +39,6 @@ public class Game extends Form implements Runnable {
 //        this.add(BorderLayout.NORTH, glassCockpit);
         this.add(BorderLayout.CENTER, mapView);
 //        this.add(BorderLayout.SOUTH, controlCluster);
-        mapView.init();
         UITimer timer = new UITimer(this);
         timer.schedule(50, true, this);
 
@@ -54,6 +53,7 @@ public class Game extends Form implements Runnable {
     public void run() {
 //        gw.tick();
 //        glassCockpit.update();
+        mapView.updateLocalTransforms();
         mapView.repaint();
 
 //        repaint();
