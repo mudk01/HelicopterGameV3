@@ -275,9 +275,6 @@ public class Helicopter extends Moveable implements Steerable {
 //        padSize = helipadSize;
 //    }
 
-
-    // TODO: 4/27/22 Watch videos on how to draw hierarchical helicopter
-
     @Override
     public void move(){
         heliLocation.setY((int) (heliLocation.getY() - Math.sin(angle) *
