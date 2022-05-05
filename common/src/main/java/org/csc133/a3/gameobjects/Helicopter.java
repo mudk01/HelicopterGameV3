@@ -17,6 +17,12 @@ public class Helicopter extends Moveable implements Steerable {
     private final static int ENGINE_BLOCK_HEIGHT = ENGINE_BLOCK_WIDTH / 3;
     private final static int BLADE_WIDTH = 25;
     private final static int BLADE_LENGTH = BUBBLE_RADIUS * 5;
+    private final static int RAIL_WIDTH = 25;
+    private final static int RAIL_LENGTH = (int) (BLADE_LENGTH/1.5);
+    private final static int LEG_WIDTH = 45;
+    private final static int LEG_HEIGHT = 10;
+    private final static int TAIL_WIDTH = 10;
+    private final static int TAIL_HEIGHT = (int) (RAIL_LENGTH*0.85);
 
     private int size, hRadius, centerX, centerY, fuel, water;
     private Point helipadCenterLocation, heliLocation;
@@ -86,6 +92,128 @@ public class Helicopter extends Moveable implements Steerable {
     }
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    private static class HeloRail extends Rectangle{
+        public HeloRail(float orientation){
+            super(ColorUtil.MAGENTA,
+                    RAIL_WIDTH, RAIL_LENGTH,
+                    (float) (orientation*Helicopter.RAIL_LENGTH/2.5),
+                    -RAIL_WIDTH/2,
+                    1,1,0);
+        }
+//        @Override
+//        protected void localDraw(Graphics g, Point parentOrigin,
+//                                 Point screenOrigin) {
+//            super.localDraw(g,parentOrigin,screenOrigin);
+//            g.drawRect(-getDimension().getWidth()/2,
+//                    -getDimension().getHeight()/2,
+//                    getDimension().getWidth(), getDimension().getHeight());
+//        }
+    }
+
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    private static class HeloLowerLeg extends Rectangle{
+        public HeloLowerLeg(float orientation){
+            super(ColorUtil.GRAY,
+                    LEG_WIDTH, LEG_HEIGHT,
+                    (float) (orientation*ENGINE_BLOCK_WIDTH/2
+                                                + orientation*LEG_WIDTH/2),
+                    (float) (-ENGINE_BLOCK_HEIGHT*2),
+                    1,1,0);
+        }
+    }
+
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    private static class HeloUpperLeg extends Rectangle{
+        public HeloUpperLeg(float orientation){
+            super(ColorUtil.GRAY,
+                    Helicopter.LEG_WIDTH, Helicopter.LEG_HEIGHT,
+                    (float) (orientation*Helicopter.ENGINE_BLOCK_WIDTH/2
+                            + orientation*Helicopter.LEG_WIDTH/2),
+                    (float) (Helicopter.BUBBLE_RADIUS -
+                            Helicopter.LEG_HEIGHT*10),
+                    1,1,0);
+        }
+    }
+
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+
+
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    // Helicopter State Pattern
+    //
+
+    HeloState heloState;
+
+    private void changeState(HeloState heloState){
+        this.heloState=heloState;
+    }
+
+    //````````````````````````````````````````````````````````````````````````
+    private abstract class HeloState{
+        Helicopter getHelo() {
+            return Helicopter.this;
+        }
+        public void startOrStopEngine(){}
+        public void accelerate() {}
+        public boolean hasLandedAt() {
+            return false;
+        }
+        public void updateLocalTransforms(){
+        }
+    }
+
+    //````````````````````````````````````````````````````````````````````````
+    private class Off extends HeloState{
+
+        @Override
+        public void startOrStopEngine(){
+            getHelo().changeState(new Starting());
+        }
+
+        @Override
+        public boolean hasLandedAt() {
+            // check other requirements
+            return true; // some boolean expression
+        }
+    }
+
+    //````````````````````````````````````````````````````````````````````````
+    private class Starting extends HeloState{
+        @Override
+        public void startOrStopEngine(){
+            getHelo().changeState(new Stopping());
+        }
+    }
+
+    //````````````````````````````````````````````````````````````````````````
+    private class Stopping extends HeloState{
+        @Override
+        public void startOrStopEngine(){
+            getHelo().changeState(new Starting());
+        }
+    }
+
+    //````````````````````````````````````````````````````````````````````````
+    private class Ready extends HeloState{
+        @Override
+        public void startOrStopEngine(){
+            // conditions go here to test for whether or not we can stop
+            // the engine
+            if(1>2){
+                getHelo().changeState(new Stopping());
+            }
+        }
+        public void accelerate(){
+            // do some acceleration
+        }
+    }
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     private ArrayList<GameObject> heloParts;
 
     private HeloBlade heloBlade;
@@ -97,6 +225,12 @@ public class Helicopter extends Moveable implements Steerable {
         heloBlade = new HeloBlade();
         heloParts.add(heloBlade);
         heloParts.add(new HeloBladeShaft());
+        heloParts.add(new HeloRail(-1));
+        heloParts.add(new HeloRail(1));
+        heloParts.add(new HeloLowerLeg(1));
+        heloParts.add(new HeloLowerLeg(-1));
+        heloParts.add(new HeloUpperLeg(1));
+        heloParts.add(new HeloUpperLeg(-1));
 
     }
 
@@ -110,6 +244,12 @@ public class Helicopter extends Moveable implements Steerable {
 
     public void updateLocalTransforms() {
         heloBlade.updateLocalTransforms(10d);
+    }
+    public void startOrStopEngine() {
+        heloState.startOrStopEngine();
+    }
+    public void accelerate() {
+        heloState.accelerate();
     }
 
 
@@ -234,7 +374,6 @@ public class Helicopter extends Moveable implements Steerable {
 //    }
 //
 ////    @Override
-//    // TODO: 4/27/22 Read about local draw method and how it will be implemented
 //
 //    public void draw(Graphics g, Point containerOrigin) {
 //        g.setColor(color);
