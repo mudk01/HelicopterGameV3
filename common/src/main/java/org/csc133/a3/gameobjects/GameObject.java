@@ -234,7 +234,7 @@ public abstract class GameObject {
     public void draw(Graphics g, Point parentOrigin, Point screenOrigin) {
         Transform gXform = preLTTransform(g, screenOrigin);
         localTransforms(gXform);
-        postLTTransform(g, parentOrigin, gXform);
+        postLTTransform(g, screenOrigin, gXform);
         localDraw(g, parentOrigin, screenOrigin);
         restoreOriginalTransforms(g);
     }

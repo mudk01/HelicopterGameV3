@@ -38,7 +38,8 @@ public class MapView extends Container {
         super.paint(g);
         Point parentOrigin = new Point(this.getX(), this.getY());
         Point screenOrigin = new Point(getAbsoluteX(), getAbsoluteY());
-        displayTransform(g);
+        setupVTM(g);
+//        displayTransform(g);
 
         Transform t = Transform.makeIdentity();
         g.getTransform(t);
@@ -46,9 +47,9 @@ public class MapView extends Container {
         t.scale(1.5f, 1.5f);
         g.setTransform(t);
 
-        g.setColor(ColorUtil.LTGRAY);
-        g.drawLine(-getWidth()/2, 0, getWidth()/2, 0);
-        g.drawLine(0, -getHeight()/2, 0, getHeight()/2);
+//        g.setColor(ColorUtil.LTGRAY);
+//        g.drawLine(-getWidth()/2, 0, getWidth()/2, 0);
+//        g.drawLine(0, -getHeight()/2, 0, getHeight()/2);
 
         helicopter.draw(g,parentOrigin,screenOrigin);
         g.resetAffine();

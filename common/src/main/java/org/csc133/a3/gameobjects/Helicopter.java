@@ -140,7 +140,16 @@ public class Helicopter extends Moveable implements Steerable {
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+    private static class HeloTailBrace extends Rectangle {
+        public HeloTailBrace(){
+            super(ColorUtil.BLACK,
+                    TAIL_WIDTH, TAIL_HEIGHT,
+                    (float) (0),
+                    (float) (-TAIL_HEIGHT),
+                    1,1,0);
 
+        }
+    }
 
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -231,7 +240,7 @@ public class Helicopter extends Moveable implements Steerable {
         heloParts.add(new HeloLowerLeg(-1));
         heloParts.add(new HeloUpperLeg(1));
         heloParts.add(new HeloUpperLeg(-1));
-
+        heloParts.add(new HeloTailBrace());
     }
 
     @Override
@@ -243,7 +252,7 @@ public class Helicopter extends Moveable implements Steerable {
     }
 
     public void updateLocalTransforms() {
-        heloBlade.updateLocalTransforms(10d);
+        heloBlade.updateLocalTransforms(-10d);
     }
     public void startOrStopEngine() {
         heloState.startOrStopEngine();
