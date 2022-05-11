@@ -26,4 +26,8 @@ public class Rectangle extends GameObject {
         cn1ForwardPrimitiveTranslate(g,getDimension());
         g.drawRect(0,0,getDimension().getWidth(), getDimension().getHeight());
     }
+
+    public void setDimensions(Dimension dimension) {
+
+    }
 }
