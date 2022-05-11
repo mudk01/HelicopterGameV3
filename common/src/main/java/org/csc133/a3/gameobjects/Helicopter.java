@@ -2,9 +2,7 @@ package org.csc133.a3.gameobjects;
 
 import com.codename1.charts.util.ColorUtil;
 import com.codename1.ui.Graphics;
-import com.codename1.ui.geom.Dimension;
 import com.codename1.ui.geom.Point;
-import org.csc133.a3.Game;
 import org.csc133.a3.gameobjects.parts.Arc;
 import org.csc133.a3.gameobjects.parts.Rectangle;
 import org.csc133.a3.interfaces.Steerable;
@@ -122,6 +120,12 @@ public class Helicopter extends Moveable implements Steerable {
                     (float) (-ENGINE_BLOCK_HEIGHT*2),
                     1,1,0);
         }
+        @Override
+        protected void localDraw(Graphics g, Point parentOrigin,
+                                 Point screenOrigin) {
+            super.localDraw(g,parentOrigin,screenOrigin);
+            g.fillRect(0,0,getDimension().getWidth(), getDimension().getHeight());
+        }
     }
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -136,21 +140,132 @@ public class Helicopter extends Moveable implements Steerable {
                             Helicopter.LEG_HEIGHT*10),
                     1,1,0);
         }
+        @Override
+        protected void localDraw(Graphics g, Point parentOrigin,
+                                 Point screenOrigin) {
+            super.localDraw(g,parentOrigin,screenOrigin);
+            g.fillRect(0,0,getDimension().getWidth(), getDimension().getHeight());
+        }
     }
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     private static class HeloTailBrace extends Rectangle {
         public HeloTailBrace(){
-            super(ColorUtil.BLACK,
+            super(ColorUtil.MAGENTA,
                     TAIL_WIDTH, TAIL_HEIGHT,
                     (float) (0),
                     (float) (-TAIL_HEIGHT),
                     1,1,0);
-
+        }
+        @Override
+        protected void localDraw(Graphics g, Point parentOrigin,
+                                 Point screenOrigin) {
+            super.localDraw(g,parentOrigin,screenOrigin);
+            g.fillRect(0,0,getDimension().getWidth(), getDimension().getHeight());
         }
     }
 
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    private static class HeloTailSide extends Rectangle {
+        private int side;
+        public HeloTailSide(int orientation) {
+            super(ColorUtil.MAGENTA,
+                    1, TAIL_HEIGHT,
+                    (float) orientation * (ENGINE_BLOCK_WIDTH/4),
+                    (float) ((-ENGINE_BLOCK_HEIGHT+TAIL_WIDTH*1.5)),
+                    1, 1, 0);
+            side = orientation;
+        }
+
+        @Override
+        protected void localDraw(Graphics g, Point parentOrigin,
+                                 Point screenOrigin) {
+            g.drawLine(0, 0,
+                    (-side*ENGINE_BLOCK_WIDTH/4 + (side*TAIL_WIDTH/2)),
+                     -TAIL_HEIGHT);
+        }
+    }
+
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    private static class HeloTailLine extends Rectangle {
+        private int side;
+        public HeloTailLine(int orientation) {
+            super(ColorUtil.MAGENTA,
+                    1, TAIL_HEIGHT,
+                    (float) orientation * (ENGINE_BLOCK_WIDTH/4),
+                    (float) ((-ENGINE_BLOCK_HEIGHT+TAIL_WIDTH*1.5)),
+                    1, 1, 0);
+            side = orientation;
+        }
+
+        @Override
+        protected void localDraw(Graphics g, Point parentOrigin,
+                                 Point screenOrigin) {
+            g.drawLine(0, 0,
+                    (int) (-side*ENGINE_BLOCK_WIDTH/2.5),
+                    (int) (-TAIL_HEIGHT/2));
+            g.drawLine((int) (-side*ENGINE_BLOCK_WIDTH/2.5),
+                    (int) (-TAIL_HEIGHT/2),
+                    (int) (-side*(ENGINE_BLOCK_WIDTH/4)),
+                    -TAIL_HEIGHT+TAIL_HEIGHT/10);
+        }
+    }
+
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    private static class HeloRotorBox extends Rectangle {
+        public HeloRotorBox() {
+            super(ColorUtil.GRAY,
+                    (int) (TAIL_WIDTH*2.5), (int) (TAIL_WIDTH*2.5),
+                    0, -TAIL_HEIGHT + -TAIL_HEIGHT/2,
+                    1, 1, 0);
+        }
+        @Override
+        protected void localDraw(Graphics g, Point parentOrigin,
+                                 Point screenOrigin) {
+            super.localDraw(g,parentOrigin,screenOrigin);
+            g.fillRect(0,0,getDimension().getWidth(), getDimension().getHeight());
+        }
+    }
+
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    private static class HeloRotorJoint extends Rectangle {
+        public HeloRotorJoint() {
+            super(ColorUtil.MAGENTA,
+                    (int) (TAIL_WIDTH*1.5), (TAIL_WIDTH),
+                    (float) (TAIL_WIDTH*2),
+                    (float) (-TAIL_HEIGHT + -TAIL_HEIGHT/2 ),
+                    1, 1, 0);
+        }
+        @Override
+        protected void localDraw(Graphics g, Point parentOrigin,
+                                 Point screenOrigin) {
+            super.localDraw(g,parentOrigin,screenOrigin);
+            g.fillRect(0,0,getDimension().getWidth(), getDimension().getHeight());
+        }
+    }
+
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    private static class HeloRotorBlade extends Rectangle {
+        public HeloRotorBlade() {
+            super(ColorUtil.GRAY,
+                    (TAIL_WIDTH), (TAIL_WIDTH*8),
+                    (float) (TAIL_WIDTH*3.5),
+                    (float) (-TAIL_HEIGHT + -TAIL_HEIGHT/2 ),
+                    1, 1, 0);
+        }
+        @Override
+        protected void localDraw(Graphics g, Point parentOrigin,
+                                 Point screenOrigin) {
+            super.localDraw(g,parentOrigin,screenOrigin);
+            g.fillRect(0,0,getDimension().getWidth(), getDimension().getHeight());
+        }
+    }
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -241,6 +356,15 @@ public class Helicopter extends Moveable implements Steerable {
         heloParts.add(new HeloUpperLeg(1));
         heloParts.add(new HeloUpperLeg(-1));
         heloParts.add(new HeloTailBrace());
+        heloParts.add(new HeloTailSide(1));
+        heloParts.add(new HeloTailSide(-1));
+        heloParts.add(new HeloTailLine(1));
+        heloParts.add(new HeloTailLine(-1));
+        heloParts.add(new HeloRotorBox());
+        heloParts.add(new HeloRotorJoint());
+        heloParts.add(new HeloRotorBlade());
+        translate(lz.getX(), lz.getY());
+        scale(.7f, .7f);
     }
 
     @Override

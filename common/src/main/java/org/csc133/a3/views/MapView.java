@@ -34,24 +34,28 @@ public class MapView extends Container {
 
     @Override
     public void paint(Graphics g) {
-//        this.getStyle().setBgColor(ColorUtil.rgb(0, 0, 0));
+        this.getStyle().setBgColor(ColorUtil.rgb(0, 0, 0));
         super.paint(g);
         Point parentOrigin = new Point(this.getX(), this.getY());
         Point screenOrigin = new Point(getAbsoluteX(), getAbsoluteY());
         setupVTM(g);
 //        displayTransform(g);
 
-        Transform t = Transform.makeIdentity();
-        g.getTransform(t);
-        t.translate(getWidth()/2, getHeight()/2);
-        t.scale(1.5f, 1.5f);
-        g.setTransform(t);
+//        Transform t = Transform.makeIdentity();
+//        g.getTransform(t);
+//        t.translate(getWidth()/2, getHeight()/2);
+//        t.scale(1.5f, 1.5f);
+//        g.setTransform(t);
 
 //        g.setColor(ColorUtil.LTGRAY);
 //        g.drawLine(-getWidth()/2, 0, getWidth()/2, 0);
 //        g.drawLine(0, -getHeight()/2, 0, getHeight()/2);
 
-        helicopter.draw(g,parentOrigin,screenOrigin);
+//        helicopter.draw(g,parentOrigin,screenOrigin);
+        for(GameObject go : gw.getGameObjectCollection()) {
+            go.draw(g, parentOrigin, screenOrigin);
+            go.updateLocalTransforms();
+        }
         g.resetAffine();
     }
 

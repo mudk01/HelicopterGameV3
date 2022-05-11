@@ -6,25 +6,25 @@ import com.codename1.ui.Form;
 import com.codename1.ui.Graphics;
 import com.codename1.ui.layouts.BorderLayout;
 import com.codename1.ui.util.UITimer;
-//import org.csc133.a3.views.ControlCluster;
+import org.csc133.a3.views.ControlCluster;
 import org.csc133.a3.views.MapView;
-//import org.csc133.a3.views.GlassCockpit;
+import org.csc133.a3.views.GlassCockpit;
 import org.csc133.a3.commands.*;
 
 
 public class Game extends Form implements Runnable {
     private GameWorld gw;
     private MapView mapView;
-//    private GlassCockpit glassCockpit;
-//    private ControlCluster controlCluster;
+    private GlassCockpit glassCockpit;
+    private ControlCluster controlCluster;
 
     public Game() {
         gw = GameWorld.getInstance();
         mapView = new MapView(gw);
 //        mapView.getStyle().setBgColor(ColorUtil.rgb(0, 0, 0));
         mapView.getStyle().setBgTransparency(255);
-//        glassCockpit = new GlassCockpit(gw);
-//        controlCluster = new ControlCluster(gw);
+        glassCockpit = new GlassCockpit(gw);
+        controlCluster = new ControlCluster(gw);
 
 //        addKeyListener(-92, new DecelerateCommand(gw));
 //        addKeyListener(-91, new AccelerateCommand(gw));
@@ -36,9 +36,9 @@ public class Game extends Form implements Runnable {
 
 
         this.setLayout(new BorderLayout());
-//        this.add(BorderLayout.NORTH, glassCockpit);
+        this.add(BorderLayout.NORTH, glassCockpit);
         this.add(BorderLayout.CENTER, mapView);
-//        this.add(BorderLayout.SOUTH, controlCluster);
+        this.add(BorderLayout.SOUTH, controlCluster);
         UITimer timer = new UITimer(this);
         timer.schedule(50, true, this);
 
@@ -52,7 +52,7 @@ public class Game extends Form implements Runnable {
     @Override
     public void run() {
 //        gw.tick();
-//        glassCockpit.update();
+        glassCockpit.update();
         mapView.updateLocalTransforms();
         mapView.repaint();
 

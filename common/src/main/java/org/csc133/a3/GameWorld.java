@@ -9,7 +9,7 @@ import com.codename1.ui.geom.Dimension;
 import com.codename1.ui.geom.Point;
 
 public class GameWorld {
-//    private River river;
+    private River river;
 //    private Helipad helipad;
     private Helicopter helicopter;
     private ArrayList<GameObject> gameObjects;
@@ -41,11 +41,12 @@ public class GameWorld {
 
     public void init() {
 //        initialAreas = new ArrayList<>();
-//        river = new River(worldSize);
+        river = new River(worldSize);
 //        helipad = new Helipad(worldSize);
 //        helicopter = new Helicopter(worldSize,
 //                helipad.getHelipadCenter(), helipad.getHelipadSize());
-        helicopter = new Helicopter(new Point(0,0));
+        helicopter = new Helicopter(new Point(worldSize.getWidth()/2,
+                worldSize.getHeight()/2));
         gameObjects = new ArrayList<>();
 //        fires = new Fires();
 //        deadFires = new Fires();
@@ -59,7 +60,8 @@ public class GameWorld {
 //        createFiresInBuilding();
 //        checkFireBudget();
 //        gameObjects.add(fires);
-//        gameObjects.add(helicopter);
+        gameObjects.add(helicopter);
+        gameObjects.add(river);
 //        helicopter.setFuel(FUEL);
     }
 
