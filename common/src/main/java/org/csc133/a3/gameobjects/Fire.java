@@ -73,8 +73,7 @@ public class Fire extends Fixed {
             radius = size / 2;
             centerLocation.setX(centerLocation.getX() - (int) (growth / 2));
             centerLocation.setY(centerLocation.getY() - (int) (growth / 2));
-            this.myTranslation.translate(growth,
-                    growth);
+
         }
     }
 
