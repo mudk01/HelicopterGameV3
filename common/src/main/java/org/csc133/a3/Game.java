@@ -26,13 +26,13 @@ public class Game extends Form implements Runnable {
         glassCockpit = new GlassCockpit(gw);
         controlCluster = new ControlCluster(gw);
 
-//        addKeyListener(-92, new DecelerateCommand(gw));
-//        addKeyListener(-91, new AccelerateCommand(gw));
-//        addKeyListener(-94, new SteerRightCommand(gw));
-//        addKeyListener(-93, new SteerLeftCommand(gw));
-//        addKeyListener('d', new DrinkCommand(gw));
-//        addKeyListener('f', new FightCommand(gw));
-//        addKeyListener('Q', new ExitCommand(gw));
+        addKeyListener(-92, new DecelerateCommand(gw));
+        addKeyListener(-91, new AccelerateCommand(gw));
+        addKeyListener(-94, new SteerRightCommand(gw));
+        addKeyListener(-93, new SteerLeftCommand(gw));
+        addKeyListener('d', new DrinkCommand(gw));
+        addKeyListener('f', new FightCommand(gw));
+        addKeyListener('Q', new ExitCommand(gw));
 
 
         this.setLayout(new BorderLayout());
@@ -55,7 +55,5 @@ public class Game extends Form implements Runnable {
         glassCockpit.update();
         mapView.updateLocalTransforms();
         mapView.repaint();
-
-//        repaint();
     }
 }

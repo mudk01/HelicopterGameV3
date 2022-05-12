@@ -39,19 +39,6 @@ public class MapView extends Container {
         Point parentOrigin = new Point(this.getX(), this.getY());
         Point screenOrigin = new Point(getAbsoluteX(), getAbsoluteY());
         setupVTM(g);
-//        displayTransform(g);
-
-//        Transform t = Transform.makeIdentity();
-//        g.getTransform(t);
-//        t.translate(getWidth()/2, getHeight()/2);
-//        t.scale(1.5f, 1.5f);
-//        g.setTransform(t);
-
-//        g.setColor(ColorUtil.LTGRAY);
-//        g.drawLine(-getWidth()/2, 0, getWidth()/2, 0);
-//        g.drawLine(0, -getHeight()/2, 0, getHeight()/2);
-
-//        helicopter.draw(g,parentOrigin,screenOrigin);
         for(GameObject go : gw.getGameObjectCollection()) {
             go.draw(g, parentOrigin, screenOrigin);
             go.updateLocalTransforms();

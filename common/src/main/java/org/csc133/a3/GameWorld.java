@@ -255,9 +255,9 @@ public class GameWorld {
         return String.valueOf(helicopter.getHeadingAngle());
     }
 
-//    public String getFuel() {
-//        return String.valueOf(helicopter.getFuel());
-//    }
+    public String getFuel() {
+        return String.valueOf(helicopter.getFuel());
+    }
 
     public String getSpeed() {
         return String.valueOf(helicopter.getSpeed());
