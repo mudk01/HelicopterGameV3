@@ -15,7 +15,7 @@ public class Building extends Fixed {
     private Point newFireLocation;
     private int value, damage;
     private Dimension worldSize;
-//    private Fires fires;
+    private Fires fires;
     private Rectangle building;
     private Dimension dimension;
 
@@ -26,7 +26,7 @@ public class Building extends Fixed {
 //        this.location = new Point(location.getX(), location.getY());
         this.worldSize = worldSize;
         value = (new Random().nextInt(10) + 1)*100;
-//        fires = new Fires();
+        fires = new Fires();
         building = new Rectangle(ColorUtil.rgb(255,0,0),
                 dimensions.getWidth(), dimensions.getHeight(),
                 0, 0,
@@ -40,19 +40,20 @@ public class Building extends Fixed {
         building.draw(g, parentOrigin, screenOrigin);
     }
 //
-//    public void setFireInBuilding(Fire fire) {
-//        if(dimension.getWidth() != 0 && dimension.getHeight() != 0) {
-//            newFireLocation =
-//                new Point(new Random().nextInt(dimension.getWidth()-
-//                        15) +
-//                        location.getX(),
-//                        new Random().nextInt(dimension.getHeight()-
-//                                15) +
-//                                location.getY());
-//            fire.setLocation(newFireLocation);
-//            fire.start();
-//        }
-//    }
+    public void setFireInBuilding(Fire fire) {
+        if(building.getDimension().getWidth() != 0 && building.getDimension().getHeight() != 0) {
+            newFireLocation =
+                new Point((int) (building.myTranslation.getTranslateX() -
+                        building.getDimension().getWidth()/2) +
+                        new Random().nextInt(building.getDimension().getWidth()),
+                        (int) (building.myTranslation.getTranslateY() -
+                                building.getDimension().getHeight()/2) +
+                                new Random().nextInt(
+                                        building.getDimension().getHeight()));
+            fire.setLocation(newFireLocation);
+            fire.start();
+        }
+    }
 //
 //    public int getValue(){
 //        return value;
@@ -62,13 +63,13 @@ public class Building extends Fixed {
 //        this.damage = Math.max(damage, this.damage);
 //    }
 //
-//    public void setFires(Fire fire) {
-//        fires.add(fire);
-//    }
+    public void setFires(Fire fire) {
+        fires.add(fire);
+    }
 //
-//    public Fires getFires() {
-//        return fires;
-//    }
+    public Fires getFires() {
+        return fires;
+    }
 //
 //    public int getDamage() {
 //        return damage;

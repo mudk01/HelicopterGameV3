@@ -51,7 +51,7 @@ public class Game extends Form implements Runnable {
 
     @Override
     public void run() {
-//        gw.tick();
+        gw.tick();
         glassCockpit.update();
         mapView.updateLocalTransforms();
         mapView.repaint();

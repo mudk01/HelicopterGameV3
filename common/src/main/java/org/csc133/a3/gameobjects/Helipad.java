@@ -62,8 +62,6 @@ public class Helipad extends Fixed {
         for(GameObject go : helipadParts) {
             go.draw(g, parentOrigin, screenOrigin);
         }
-//        helipadBox.draw(g, parentOrigin, screenOrigin);
-//        helipadCircle.draw(g, parentOrigin, screenOrigin);
     }
 
     public Transform getTransform() {

@@ -363,7 +363,8 @@ public class Helicopter extends Moveable implements Steerable {
         heloParts.add(new HeloRotorBox());
         heloParts.add(new HeloRotorJoint());
         heloParts.add(new HeloRotorBlade());
-        translate(lz.getX(), lz.getY());
+        heliLocation = lz;
+        translate(heliLocation.getX(), heliLocation.getY());
         scale(.3f, .3f);
     }
 
@@ -410,15 +411,17 @@ public class Helicopter extends Moveable implements Steerable {
 
     @Override
     public void move(){
-        heliLocation.setY((int) (heliLocation.getY() - Math.sin(angle) *
-                speed));
-        centerY = heliLocation.getY() + hRadius;
-        heliLocation.setX((int) (heliLocation.getX() + Math.cos(angle) *
-                speed));
-        centerX = heliLocation.getX() + hRadius;
-        endHeadX = (int) (centerX + Math.cos(angle) * size*2);
-        endHeadY = (int) (centerY - Math.sin(angle) * size*2);
-        fuel -= (int) (Math.sqrt(speed) + 5);
+//        heliLocation.setY((int) (heliLocation.getY() - Math.sin(angle) *
+//                speed));
+//        centerY = heliLocation.getY() + hRadius;
+//        heliLocation.setX((int) (heliLocation.getX() + Math.cos(angle) *
+//                speed));
+//        centerX = heliLocation.getX() + hRadius;
+////        endHeadX = (int) (centerX + Math.cos(angle) * size*2);
+////        endHeadY = (int) (centerY - Math.sin(angle) * size*2);
+//        fuel -= (int) (Math.sqrt(speed) + 5);
+        translate(7*speed*Math.cos(Math.toRadians(heading)),
+                -7*speed*Math.sin(Math.toRadians(heading)));
     }
 
     public void speedUp() {
@@ -436,8 +439,8 @@ public class Helicopter extends Moveable implements Steerable {
     @Override
     public void steerLeft() {
         angle += Math.toRadians(15);
-        endHeadX = (int) (centerX + Math.cos(angle) * size*2);
-        endHeadY = (int) (centerY - Math.sin(angle) * size*2);
+//        endHeadX = (int) (centerX + Math.cos(angle) * size*2);
+//        endHeadY = (int) (centerY - Math.sin(angle) * size*2);
     }
 
     @Override
@@ -456,13 +459,13 @@ public class Helicopter extends Moveable implements Steerable {
 //                        (riverLocation.getY() + riverDimension.getHeight()));
 //    }
 //
-//    public boolean checkFireCollision(Fire fire) {
-//        return (centerX >= (fire.getFireLocation().getX() - fire.getRadius()) &&
-//                centerY >= (fire.getFireLocation().getY() - fire.getRadius()))
-//                && (centerX <= (fire.getFireLocation().getX() +
-//                fire.getRadius()) && centerY <= (fire.getFireLocation().getY()
-//                + fire.getRadius()));
-//    }
+    public boolean checkFireCollision(Fire fire) {
+        return (centerX >= (fire.getFireLocation().getX() - fire.getRadius()) &&
+                centerY >= (fire.getFireLocation().getY() - fire.getRadius()))
+                && (centerX <= (fire.getFireLocation().getX() +
+                fire.getRadius()) && centerY <= (fire.getFireLocation().getY()
+                + fire.getRadius()));
+    }
 //
 //    public void drinkWater() {
 //        if((riverCollision && speed <= 2) && water < 1000) {

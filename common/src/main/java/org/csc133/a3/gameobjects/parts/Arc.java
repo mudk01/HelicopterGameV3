@@ -37,7 +37,6 @@ public class Arc extends GameObject {
         setDimension(new Dimension(width, height));
         this.startAngle = startAngle;
         this.arcAngle = arcAngle;
-
         translate(tx, ty);
         scale(sx, sy);
         rotate(degreesRotation);
