@@ -364,15 +364,13 @@ public class Helicopter extends Moveable implements Steerable {
         heloParts.add(new HeloRotorJoint());
         heloParts.add(new HeloRotorBlade());
         heliLocation = lz;
-        translate(heliLocation.getX(), heliLocation.getY());
+        translate(heliLocation.getX(),
+                heliLocation.getY());
         scale(.3f, .3f);
         angle = Math.toRadians(90);
         speed = 0;
         fuel = 0;
         water = 0;
-
-//        changeState(heloState);
-//        System.err.println(heloState.getHelo());
     }
 
     @Override
@@ -393,35 +391,10 @@ public class Helicopter extends Moveable implements Steerable {
         heloState.accelerate();
     }
 
-
-//    public Helicopter(Dimension worldSize, Point heliCenter, int helipadSize) {
-//        this.color = ColorUtil.rgb(252, 252, 28);
-//        this.dimension = new Dimension(worldSize.getWidth(),
-//                worldSize.getHeight());
-//        this.location = heliCenter;
-//        size = dimension.getHeight()/42;
-//        this.speed = 0;
-//        fuel = 0;
-//        water = 0;
-//        helipadCenterLocation = location;
-//        hRadius = size/2;
-//        heliLocation = new Point(helipadCenterLocation.getX() - hRadius,
-//                helipadCenterLocation.getY());
-//        centerX = heliLocation.getX() + hRadius;
-//        centerY = heliLocation.getY() + hRadius;
-//        angle = Math.toRadians(90);
-//        endHeadX = centerX;
-//        endHeadY = centerY - (size*2);
-//        riverCollision = false;
-//        padSize = helipadSize;
-//    }
-
     @Override
     public void move(){
         translate(Math.cos(angle) * speed,
-                -Math.sin(angle) * speed);
-//        myTranslation.setTranslation((float) (heliLocation.getX() + Math.cos(angle) * speed),
-//                (float) (heliLocation.getY() - Math.sin(angle) * speed));
+                Math.sin(angle) * speed);
     }
 
     public void speedUp() {
@@ -439,13 +412,13 @@ public class Helicopter extends Moveable implements Steerable {
     @Override
     public void steerLeft() {
         angle += Math.toRadians(15);
-        updateLocalTransforms(15d);
+        updateLocalTransforms(15);
     }
 
     @Override
     public void steerRight() {
         angle -= Math.toRadians(15);
-        updateLocalTransforms(-15d);
+        updateLocalTransforms(-15);
     }
 
     public void updateLocalTransforms(double rotationSpeed) {
