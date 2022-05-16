@@ -15,6 +15,6 @@ public class DrinkCommand extends Command {
 
     @Override
     public void actionPerformed(ActionEvent evt) {
-//        gw.drinkWater();
+        gw.drinkWater();
     }
 }

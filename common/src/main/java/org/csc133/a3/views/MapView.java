@@ -3,26 +3,20 @@ package org.csc133.a3.views;
 import com.codename1.charts.util.ColorUtil;
 import com.codename1.ui.Container;
 import com.codename1.ui.Graphics;
-import com.codename1.ui.Tabs;
 import com.codename1.ui.Transform;
 import com.codename1.ui.geom.Dimension;
 import com.codename1.ui.geom.Point;
-import com.codename1.ui.geom.Shape;
 import org.csc133.a3.GameWorld;
 import org.csc133.a3.gameobjects.GameObject;
-import org.csc133.a3.gameobjects.Helicopter;
 
 
 public class MapView extends Container {
     private GameWorld gw;
     private float winLeft, winBottom, winRight, winTop, winWidth, winHeight;
     Transform worldToND, ndToDisplay, theVTM;
-    private Helicopter helicopter;
 
     public MapView(GameWorld gw) {
         this.gw = gw;
-        helicopter = new Helicopter(new Point(0,0));
-
     }
 
 
@@ -39,7 +33,7 @@ public class MapView extends Container {
         Point parentOrigin = new Point(this.getX(), this.getY());
         Point screenOrigin = new Point(getAbsoluteX(), getAbsoluteY());
         setupVTM(g);
-        for(GameObject go : gw.getGameObjectCollection()) {
+        for (GameObject go : gw.getGameObjectCollection()) {
             go.draw(g, parentOrigin, screenOrigin);
             go.updateLocalTransforms();
         }
@@ -47,17 +41,17 @@ public class MapView extends Container {
     }
 
     private Transform buildWorldToNDXform(float winWidth, float winHeight,
-                                          float winLeft, float winBottom){
+                                          float winLeft, float winBottom) {
         Transform tmpXform = Transform.makeIdentity();
-        tmpXform.scale(1/winWidth, 1/winHeight);
-        tmpXform.translate(-winLeft,-winBottom);
+        tmpXform.scale(1 / winWidth, 1 / winHeight);
+        tmpXform.translate(-winLeft, -winBottom);
         return tmpXform;
     }
 
     private Transform buildNDToDisplayXform(float displayWidth,
-                                            float displayHeight){
+                                            float displayHeight) {
         Transform tmpXform = Transform.makeIdentity();
-        tmpXform.translate(0,displayHeight);
+        tmpXform.translate(0, displayHeight);
         tmpXform.scale(displayWidth, -displayHeight);
         return tmpXform;
     }
@@ -65,12 +59,12 @@ public class MapView extends Container {
     private void setupVTM(Graphics g) {
         Transform worldToND, ndToDisplay, theVTM;
 
-        winLeft=winBottom=0;
+        winLeft = winBottom = 0;
         winRight = this.getWidth();
         winTop = this.getHeight();
 
-        float winHeight = winTop-winBottom;
-        float winWidth = winRight-winLeft;
+        float winHeight = winTop - winBottom;
+        float winWidth = winRight - winLeft;
 
         worldToND = buildWorldToNDXform(winWidth, winHeight, winLeft,
                 winBottom);
@@ -86,25 +80,21 @@ public class MapView extends Container {
         g.setTransform(gXform);
     }
 
-    public void displayTransform(Graphics g){
+    public void displayTransform(Graphics g) {
         Transform gXform = Transform.makeIdentity();
         g.getTransform(gXform);
         gXform.translate(getAbsoluteX(), getAbsoluteY());
 
         // apply display mapping
         //
-        gXform.translate(0,getHeight());
-        gXform.scale(1f,-1f);
+        gXform.translate(0, getHeight());
+        gXform.scale(1f, -1f);
 
         // move the drawing coordinates as part of the "local origin"
         // transformations
         //
-        gXform.translate(-getAbsoluteX(),-getAbsoluteY());
+        gXform.translate(-getAbsoluteX(), -getAbsoluteY());
         g.setTransform(gXform);
     }
+}
 
-    public void updateLocalTransforms() {
-        helicopter.updateLocalTransforms();
-    }
-
-    }

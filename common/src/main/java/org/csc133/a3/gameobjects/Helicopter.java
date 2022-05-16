@@ -2,6 +2,7 @@ package org.csc133.a3.gameobjects;
 
 import com.codename1.charts.util.ColorUtil;
 import com.codename1.ui.Graphics;
+import com.codename1.ui.geom.Dimension;
 import com.codename1.ui.geom.Point;
 import org.csc133.a3.gameobjects.parts.Arc;
 import org.csc133.a3.gameobjects.parts.Rectangle;
@@ -22,9 +23,14 @@ public class Helicopter extends Moveable implements Steerable {
     private final static int TAIL_WIDTH = 10;
     private final static int TAIL_HEIGHT = (int) (RAIL_LENGTH*0.85);
 
-    private int size, hRadius, centerX, centerY, fuel, water;
+    private int size;
+    private int hRadius;
+    private int centerX;
+    private int centerY;
+    private int fuel;
+    private int water;
     private Point helipadCenterLocation, heliLocation;
-    private int endHeadX, endHeadY, padSize;
+    private int padSize;
     private double angle;
     private final int MAX_SPEED = 10;
     private boolean riverCollision;
@@ -34,7 +40,7 @@ public class Helicopter extends Moveable implements Steerable {
     private static class HeloBubble extends Arc {
 
         public HeloBubble() {
-            super(ColorUtil.MAGENTA,
+            super(ColorUtil.rgb(252, 252, 28),
                     2*BUBBLE_RADIUS,
                     2*BUBBLE_RADIUS,
                     0, (float)(-2*BUBBLE_RADIUS*.06),
@@ -49,7 +55,7 @@ public class Helicopter extends Moveable implements Steerable {
 
     private static class HeloEngineBlock extends Rectangle {
         public HeloEngineBlock() {
-            super(ColorUtil.MAGENTA,
+            super(ColorUtil.rgb(252, 252, 28),
                     ENGINE_BLOCK_WIDTH,
                     ENGINE_BLOCK_HEIGHT,
                     0, (float) (-ENGINE_BLOCK_HEIGHT*1.9),
@@ -79,7 +85,7 @@ public class Helicopter extends Moveable implements Steerable {
     private static class HeloBladeShaft extends Arc {
 
         public HeloBladeShaft() {
-            super(ColorUtil.GRAY,
+            super(ColorUtil.rgb(252, 252, 28),
                     2 * BLADE_WIDTH / 3,
                     2 * BLADE_WIDTH / 3,
                     0, (float)(-ENGINE_BLOCK_HEIGHT * 1.9),
@@ -93,20 +99,12 @@ public class Helicopter extends Moveable implements Steerable {
 
     private static class HeloRail extends Rectangle{
         public HeloRail(float orientation){
-            super(ColorUtil.MAGENTA,
+            super(ColorUtil.rgb(252, 252, 28),
                     RAIL_WIDTH, RAIL_LENGTH,
                     (float) (orientation*Helicopter.RAIL_LENGTH/2.5),
                     -RAIL_WIDTH/2,
                     1,1,0);
         }
-//        @Override
-//        protected void localDraw(Graphics g, Point parentOrigin,
-//                                 Point screenOrigin) {
-//            super.localDraw(g,parentOrigin,screenOrigin);
-//            g.drawRect(-getDimension().getWidth()/2,
-//                    -getDimension().getHeight()/2,
-//                    getDimension().getWidth(), getDimension().getHeight());
-//        }
     }
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -124,7 +122,8 @@ public class Helicopter extends Moveable implements Steerable {
         protected void localDraw(Graphics g, Point parentOrigin,
                                  Point screenOrigin) {
             super.localDraw(g,parentOrigin,screenOrigin);
-            g.fillRect(0,0,getDimension().getWidth(), getDimension().getHeight());
+            g.fillRect(0,0,getDimension().getWidth(),
+                    getDimension().getHeight());
         }
     }
 
@@ -144,7 +143,8 @@ public class Helicopter extends Moveable implements Steerable {
         protected void localDraw(Graphics g, Point parentOrigin,
                                  Point screenOrigin) {
             super.localDraw(g,parentOrigin,screenOrigin);
-            g.fillRect(0,0,getDimension().getWidth(), getDimension().getHeight());
+            g.fillRect(0,0,getDimension().getWidth(),
+                    getDimension().getHeight());
         }
     }
 
@@ -152,7 +152,7 @@ public class Helicopter extends Moveable implements Steerable {
 
     private static class HeloTailBrace extends Rectangle {
         public HeloTailBrace(){
-            super(ColorUtil.MAGENTA,
+            super(ColorUtil.rgb(252, 252, 28),
                     TAIL_WIDTH, TAIL_HEIGHT,
                     (float) (0),
                     (float) (-TAIL_HEIGHT),
@@ -162,7 +162,8 @@ public class Helicopter extends Moveable implements Steerable {
         protected void localDraw(Graphics g, Point parentOrigin,
                                  Point screenOrigin) {
             super.localDraw(g,parentOrigin,screenOrigin);
-            g.fillRect(0,0,getDimension().getWidth(), getDimension().getHeight());
+            g.fillRect(0,0,getDimension().getWidth(),
+                    getDimension().getHeight());
         }
     }
 
@@ -171,7 +172,7 @@ public class Helicopter extends Moveable implements Steerable {
     private static class HeloTailSide extends Rectangle {
         private int side;
         public HeloTailSide(int orientation) {
-            super(ColorUtil.MAGENTA,
+            super(ColorUtil.rgb(252, 252, 28),
                     1, TAIL_HEIGHT,
                     (float) orientation * (ENGINE_BLOCK_WIDTH/4),
                     (float) ((-ENGINE_BLOCK_HEIGHT+TAIL_WIDTH*1.5)),
@@ -193,7 +194,7 @@ public class Helicopter extends Moveable implements Steerable {
     private static class HeloTailLine extends Rectangle {
         private int side;
         public HeloTailLine(int orientation) {
-            super(ColorUtil.MAGENTA,
+            super(ColorUtil.rgb(252, 252, 28),
                     1, TAIL_HEIGHT,
                     (float) orientation * (ENGINE_BLOCK_WIDTH/4),
                     (float) ((-ENGINE_BLOCK_HEIGHT+TAIL_WIDTH*1.5)),
@@ -227,7 +228,8 @@ public class Helicopter extends Moveable implements Steerable {
         protected void localDraw(Graphics g, Point parentOrigin,
                                  Point screenOrigin) {
             super.localDraw(g,parentOrigin,screenOrigin);
-            g.fillRect(0,0,getDimension().getWidth(), getDimension().getHeight());
+            g.fillRect(0,0,getDimension().getWidth(),
+                    getDimension().getHeight());
         }
     }
 
@@ -235,7 +237,7 @@ public class Helicopter extends Moveable implements Steerable {
 
     private static class HeloRotorJoint extends Rectangle {
         public HeloRotorJoint() {
-            super(ColorUtil.MAGENTA,
+            super(ColorUtil.rgb(252, 252, 28),
                     (int) (TAIL_WIDTH*1.5), (TAIL_WIDTH),
                     (float) (TAIL_WIDTH*2),
                     (float) (-TAIL_HEIGHT + -TAIL_HEIGHT/2 ),
@@ -245,7 +247,8 @@ public class Helicopter extends Moveable implements Steerable {
         protected void localDraw(Graphics g, Point parentOrigin,
                                  Point screenOrigin) {
             super.localDraw(g,parentOrigin,screenOrigin);
-            g.fillRect(0,0,getDimension().getWidth(), getDimension().getHeight());
+            g.fillRect(0,0,getDimension().getWidth(),
+                    getDimension().getHeight());
         }
     }
 
@@ -263,7 +266,8 @@ public class Helicopter extends Moveable implements Steerable {
         protected void localDraw(Graphics g, Point parentOrigin,
                                  Point screenOrigin) {
             super.localDraw(g,parentOrigin,screenOrigin);
-            g.fillRect(0,0,getDimension().getWidth(), getDimension().getHeight());
+            g.fillRect(0,0,getDimension().getWidth(),
+                    getDimension().getHeight());
         }
     }
 
@@ -339,12 +343,20 @@ public class Helicopter extends Moveable implements Steerable {
     }
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     private ArrayList<GameObject> heloParts;
+    private HeloBubble heloBubble;
+    private Dimension worldDim;
+    private int helipadBoxSize;
+    private Dimension riverdim;
+    private Boolean canDraw;
+    private float drawX, drawY;
+    private AddString fuelString, waterString;
 
     private HeloBlade heloBlade;
-    public Helicopter(Point lz) {
+    public Helicopter(Dimension worldSize, Point lz, int padBoxSize,
+                      Dimension riverdim) {
         heloParts = new ArrayList<>();
-
-        heloParts.add(new HeloBubble());
+        heloBubble = new HeloBubble();
+        heloParts.add(heloBubble);
         heloParts.add(new HeloEngineBlock());
         heloBlade = new HeloBlade();
         heloParts.add(heloBlade);
@@ -367,10 +379,19 @@ public class Helicopter extends Moveable implements Steerable {
         translate(heliLocation.getX(),
                 heliLocation.getY());
         scale(.3f, .3f);
+        setColor(ColorUtil.rgb(252, 252, 28));
         angle = Math.toRadians(90);
         speed = 0;
         fuel = 0;
         water = 0;
+        this.riverdim = riverdim;
+        centerX =
+                (int) (heliLocation.getX() - worldSize.getWidth()/2);
+        centerY =
+                (int) (heliLocation.getY()/2 - worldSize.getHeight() +
+                        padBoxSize*1.5);
+        worldDim = worldSize;
+        helipadBoxSize = padBoxSize;
     }
 
     @Override
@@ -379,6 +400,17 @@ public class Helicopter extends Moveable implements Steerable {
         for(GameObject go : heloParts) {
             go.draw(g, parentOrigin, screenOrigin);
         }
+        g.setColor(getColor());
+        fuelString = new AddString("F: " + fuel, getColor(),
+                new Point(helipadBoxSize,
+                        -heliLocation.getY()));
+        waterString = new AddString("W: " + water, getColor(),
+                new Point(helipadBoxSize,
+                        -heliLocation.getY()-helipadBoxSize));
+        waterString.scale(3,3);
+        waterString.draw(g, parentOrigin, screenOrigin);
+        fuelString.scale(3,3);
+        fuelString.draw(g, parentOrigin, screenOrigin);
     }
 
     public void updateLocalTransforms() {
@@ -395,6 +427,8 @@ public class Helicopter extends Moveable implements Steerable {
     public void move(){
         translate(Math.cos(angle) * speed,
                 Math.sin(angle) * speed);
+        fuel -= (int) (Math.sqrt(speed) + 5);
+
     }
 
     public void speedUp() {
@@ -425,15 +459,33 @@ public class Helicopter extends Moveable implements Steerable {
         this.rotate(rotationSpeed);
     }
 
-//    public void checkRiverCollision(Point riverLocation,
-//                                    Dimension riverDimension) {
-//        riverCollision = (centerX >= riverLocation.getX() && centerY >=
-//                riverLocation.getY()) &&
-//                (centerX <= (riverLocation.getX() + riverDimension.getWidth())
-//                        && centerY <=
-//                        (riverLocation.getY() + riverDimension.getHeight()));
-//    }
-//
+    public void setTrue(float x, float y) {
+        canDraw = true;
+        drawX = x;
+        drawY = y;
+    }
+
+    public void checkRiverCollision() {
+        riverCollision =
+                (myTranslation.getTranslateX()-heliLocation.getX() >=
+                        -1*(int)((-heliLocation.getX()+(worldDim.getWidth() -
+                                worldDim.getWidth()/2)*3) +
+                                (riverdim.getWidth()/2+helipadBoxSize*2.3)) &&
+                        myTranslation.getTranslateY() <=
+                        (-heliLocation.getY()+(worldDim.getHeight() -
+                                worldDim.getHeight()/3)*3-helipadBoxSize -
+                                (riverdim.getHeight()/2)*3)) &&
+                (myTranslation.getTranslateX()-heliLocation.getX() <=
+                        (-heliLocation.getX()+ (worldDim.getWidth() -
+                                worldDim.getWidth()/2)*3)+(riverdim.getWidth()
+                                / 2 +helipadBoxSize*2)
+                        && myTranslation.getTranslateY() <=
+                        (-heliLocation.getY()+(worldDim.getHeight() -
+                                worldDim.getHeight()/3)*3-helipadBoxSize +
+                                (riverdim.getHeight()/2)*3));
+        System.err.println(riverCollision);
+    }
+
     public boolean checkFireCollision(Fire fire) {
         return (centerX >= (fire.getFireLocation().getX() - fire.getRadius()) &&
                 centerY >= (fire.getFireLocation().getY() - fire.getRadius()))
@@ -441,25 +493,25 @@ public class Helicopter extends Moveable implements Steerable {
                 fire.getRadius()) && centerY <= (fire.getFireLocation().getY()
                 + fire.getRadius()));
     }
-//
-//    public void drinkWater() {
-//        if((riverCollision && speed <= 2) && water < 1000) {
-//            water += 100;
-//        }
-//    }
-//
-//    public void fightFire(Fires fires) {
-//        for(Fire fire : fires) {
-//            if(fire.detected()) {
-//                fire.reduceFire(water);
-//            }
-//            fire.setFalse();
-//        }
-//    }
-//
-//    public void dropWater() {
-//        water = 0;
-//    }
+
+    public void drinkWater() {
+        if((riverCollision && speed <= 2) && water < 1000) {
+            water += 100;
+        }
+    }
+
+    public void fightFire(Fires fires) {
+        for(Fire fire : fires) {
+            if(fire.detected()) {
+                fire.reduceFire(water);
+            }
+            fire.setFalse();
+        }
+    }
+
+    public void dropWater() {
+        water = 0;
+    }
 //
     public void setFuel(int fuelIn) {
         fuel = fuelIn;
@@ -472,35 +524,14 @@ public class Helicopter extends Moveable implements Steerable {
     public int getFuel() {
         return fuel;
     }
-//
-//    public boolean isOnPad() {
-//        return (centerX >= (helipadCenterLocation.getX() - padSize/4) &&
-//                centerY >= (helipadCenterLocation.getY() - padSize/4))
-//                && (centerX <= (helipadCenterLocation.getX() +
-//                padSize/4) && centerY <= (helipadCenterLocation.getY()
-//                + padSize/4));
-//    }
-//
-////    @Override
-//
-//    public void draw(Graphics g, Point containerOrigin) {
-//        g.setColor(color);
-//        g.fillArc(containerOrigin.getX() + heliLocation.getX(),
-//                containerOrigin.getY() + heliLocation.getY(), size,
-//                size, 0, 360);
-//        g.drawLine(containerOrigin.getX() + centerX,
-//                containerOrigin.getY() + centerY,
-//                containerOrigin.getX() + endHeadX,
-//                containerOrigin.getY() + endHeadY);
-//        g.drawString("F: " + fuel,
-//                containerOrigin.getX() + heliLocation.getX(),
-//                containerOrigin.getY() + heliLocation.getY() +
-//                        (int)(size*2.5));
-//        g.drawString("W: " + water ,
-//                containerOrigin.getX() + heliLocation.getX(),
-//                containerOrigin.getY() + heliLocation.getY() +
-//                        (int)(size*3.5));
-//    }
+
+    public boolean isOnPad() {
+        return (centerX >= (helipadCenterLocation.getX() - padSize/4) &&
+                centerY >= (helipadCenterLocation.getY() - padSize/4))
+                && (centerX <= (helipadCenterLocation.getX() +
+                padSize/4) && centerY <= (helipadCenterLocation.getY()
+                + padSize/4));
+    }
 
     public int getSpeed() {
         return super.getSpeed();

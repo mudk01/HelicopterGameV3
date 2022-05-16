@@ -15,7 +15,8 @@ public class AddString extends GameObject{
 
     }
     @Override
-    protected void localDraw(Graphics g, Point parentOrigin, Point screenOrigin) {
+    protected void localDraw(Graphics g, Point parentOrigin,
+                             Point screenOrigin) {
         containerTranslate(g, parentOrigin);
         g.drawString("" + string,0,0);
     }

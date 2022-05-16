@@ -11,7 +11,7 @@ import com.codename1.ui.geom.Point;
 public class GameWorld {
     private River river;
     private Helipad helipad;
-    private Helicopter helicopter;
+    private PlayerHelicopter playerHelicopter;
     private ArrayList<GameObject> gameObjects;
     private Dimension worldSize;
     private Building buildingTop, buildingRight, buildingLeft;
@@ -43,8 +43,11 @@ public class GameWorld {
         initialAreas = new ArrayList<>();
         river = new River(worldSize);
         helipad = new Helipad(worldSize);
-        helicopter = new Helicopter(new Point((int) helipad.getTransform().getTranslateX(),
-                (int) helipad.getTransform().getTranslateY()));
+        playerHelicopter =
+                new PlayerHelicopter(worldSize,
+                        new Point((int) helipad.getTransform().getTranslateX(),
+                (int) helipad.getTransform().getTranslateY()),
+                        helipad.getHelipadBoxSize(), river.getDimension());
         gameObjects = new ArrayList<>();
         fires = new Fires();
         deadFires = new Fires();
@@ -54,41 +57,41 @@ public class GameWorld {
         area = 0;
         gameObjects.add(buildings);
         createFiresInBuilding();
-//        checkFireBudget();
+        checkFireBudget();
         gameObjects.add(fires);
         gameObjects.add(river);
         gameObjects.add(helipad);
 
-//        helicopter.setFuel(FUEL);
-        gameObjects.add(helicopter);
+        playerHelicopter.setFuel(FUEL);
+        gameObjects.add(playerHelicopter);
 
     }
 
     public void tick() {
         buildingCount = 0;
-//        for(GameObject go : gameObjects) {
-//            if(go instanceof Buildings) {
-//                for(Building b : buildings) {
-//                    buildingDamage = 0;
-//                    for(Fire fire : b.getFires()) {
-//                        buildingDamage += fire.getArea();
-//                    }
-//                    int currDamage =
-//                            (buildingDamage-initialAreas.get(buildingCount))/
-//                                    b.getValue();
-//                    if(currDamage < 100) {
-//                        b.setDamage(currDamage);
-//                    } else {
-//                        b.setDamage(100);
-//                        for(Fire fire : b.getFires()) {
-//                            fire.setCanGrow(false);
-//                        }
-//                    }
-//                    buildingCount++;
-//                }
-//            }
-//        }
-        helicopter.move();
+        for(GameObject go : gameObjects) {
+            if(go instanceof Buildings) {
+                for(Building b : buildings) {
+                    buildingDamage = 0;
+                    for(Fire fire : b.getFires()) {
+                        buildingDamage += fire.getArea();
+                    }
+                    int currDamage =
+                            (buildingDamage-initialAreas.get(buildingCount))/
+                                    b.getValue();
+                    if(currDamage < 100) {
+                        b.setDamage(currDamage);
+                    } else {
+                        b.setDamage(100);
+                        for(Fire fire : b.getFires()) {
+                            fire.setCanGrow(false);
+                        }
+                    }
+                    buildingCount++;
+                }
+            }
+        }
+        playerHelicopter.move();
         fireCount = 0;
         if(getFireCount()>0) {
             chosenFire = new Random().nextInt(getFireCount());
@@ -100,7 +103,7 @@ public class GameWorld {
                         fire.growFire();
                     }
                     fireCount++;
-                    if (helicopter.checkFireCollision(fire)) {
+                    if (playerHelicopter.checkFireCollision(fire)) {
                         fire.setTrue();
                     } else {
                         fire.setFalse();
@@ -123,18 +126,18 @@ public class GameWorld {
                 }
             }
         }
-//        if((getFireCount() == 0 && helicopter.isOnPad()) &&
-//                (!checkBuildingsDestroyed())) {
-//            gameWon();
-//        }
-//        if(checkBuildingsDestroyed()) {
-//            endGameBuildings();
-//        }
-//        helicopter.checkRiverCollision(river.getLocation(),
-//                river.getDimension());
-//        if(helicopter.checkFuel()) {
-//            endGameFuel();
-//        }
+        if((getFireCount() == 0 && playerHelicopter.isOnPad()) &&
+                (!checkBuildingsDestroyed())) {
+            gameWon();
+        }
+        if(checkBuildingsDestroyed()) {
+            endGameBuildings();
+        }
+//        river.isCollidingWith(helicopter);
+        playerHelicopter.checkRiverCollision();
+        if(playerHelicopter.checkFuel()) {
+            endGameFuel();
+        }
     }
 
     private void createBuildings() {
@@ -165,9 +168,9 @@ public class GameWorld {
         buildings.add(buildingTop);
     }
 
-//    private boolean checkBuildingsDestroyed() {
-//        return getTotalAverageDamage() >= 100;
-//    }
+    private boolean checkBuildingsDestroyed() {
+        return getTotalAverageDamage() >= 100;
+    }
 
     private void createFiresInBuilding(){
         for(GameObject go : gameObjects) {
@@ -192,75 +195,75 @@ public class GameWorld {
         initialAreas.add(area);
     }
 
-//    private void checkFireBudget() {
-//        for(GameObject go : gameObjects) {
-//            if(go instanceof Buildings) {
-//                for(Building building: buildings) {
-//                    if(area < fireArea) {
-//                        remainingAreaSize =
-//                                (int)Math.sqrt(Math.ceil((fireArea - area)/
-//                                        Math.PI)) * 2;
-//                        fire = new Fire(worldSize, remainingAreaSize);
-//                        fires.add(fire);
-//                        building.setFires(fire);
-//                        fire.setFire(building);
-//                        area+=fire.getArea();
-//                    }
-//                }
-//            }
-//        }
-//    }
+    private void checkFireBudget() {
+        for(GameObject go : gameObjects) {
+            if(go instanceof Buildings) {
+                for(Building building: buildings) {
+                    if(area < fireArea) {
+                        remainingAreaSize =
+                                (int)Math.sqrt(Math.ceil((fireArea - area)/
+                                        Math.PI)) * 2;
+                        fire = new Fire(worldSize, remainingAreaSize);
+                        fires.add(fire);
+                        building.setFires(fire);
+                        fire.setFire(building);
+                        area+=fire.getArea();
+                    }
+                }
+            }
+        }
+    }
 
-//    private void gameWon() {
-//        if(Dialog.show("Congratulations!",
-//                "You put out all the fires!\n Score: " + calculateScore(),
-//                "Replay", "Exit")) {
-//            init();
-//        }
-//        else {
-//            Display.getInstance().exitApplication();
-//        }
-//    }
+    private void gameWon() {
+        if(Dialog.show("Congratulations!",
+                "You put out all the fires!\n Score: " + calculateScore(),
+                "Replay", "Exit")) {
+            init();
+        }
+        else {
+            Display.getInstance().exitApplication();
+        }
+    }
 
-//    private void endGameFuel() {
-//        if(Dialog.show("Game Over", "You ran out of fuel",
-//                "Replay", "Exit")) {
-//            init();
-//        }
-//        else {
-//            Display.getInstance().exitApplication();
-//        }
-//    }
-//
-//    private void endGameBuildings() {
-//        if(Dialog.show("Game Over", "All Buildings Were Destroyed",
-//                "Replay", "Exit")) {
-//            init();
-//        }
-//        else {
-//            Display.getInstance().exitApplication();
-//        }
-//    }
+    private void endGameFuel() {
+        if(Dialog.show("Game Over", "You ran out of fuel",
+                "Replay", "Exit")) {
+            init();
+        }
+        else {
+            Display.getInstance().exitApplication();
+        }
+    }
 
-//    public int calculateScore() {
-//        score = 100 - getTotalAverageDamage();
-//        return score;
-//    }
+    private void endGameBuildings() {
+        if(Dialog.show("Game Over", "All Buildings Were Destroyed",
+                "Replay", "Exit")) {
+            init();
+        }
+        else {
+            Display.getInstance().exitApplication();
+        }
+    }
+
+    public int calculateScore() {
+        score = 100 - getTotalAverageDamage();
+        return score;
+    }
 
     public ArrayList<GameObject> getGameObjectCollection() {
         return gameObjects;
     }
 
     public String getHeading() {
-        return String.valueOf(helicopter.getHeadingAngle());
+        return String.valueOf(playerHelicopter.getHeadingAngle());
     }
 
     public String getFuel() {
-        return String.valueOf(helicopter.getFuel());
+        return String.valueOf(playerHelicopter.getFuel());
     }
 
     public String getSpeed() {
-        return String.valueOf(helicopter.getSpeed());
+        return String.valueOf(playerHelicopter.getSpeed());
     }
 
     public void setDimension(Dimension worldSize) {
@@ -275,69 +278,69 @@ public class GameWorld {
     }
 
     public void decelerateHeli() {
-        helicopter.slowDown();
+        playerHelicopter.slowDown();
     }
 
     public void accelerateHeli() {
-        helicopter.speedUp();
+        playerHelicopter.speedUp();
     }
 
     public void steerLeft() {
-        helicopter.steerLeft();
+        playerHelicopter.steerLeft();
     }
 
     public void steerRight() {
-        helicopter.steerRight();
+        playerHelicopter.steerRight();
     }
 
-//    public void drinkWater() {
-//        helicopter.drinkWater();
-//    }
+    public void drinkWater() {
+        playerHelicopter.drinkWater();
+    }
 
-//    public void fightFire() {
-//        helicopter.fightFire(fires);
-//        helicopter.dropWater();
-//    }
+    public void fightFire() {
+        playerHelicopter.fightFire(fires);
+        playerHelicopter.dropWater();
+    }
 
     public int getFireCount() {
         return fires.getSize();
     }
-//
-//    public String getFireSize() {
-//        fireSize = 0;
-//        for(GameObject go : gameObjects) {
-//            if(go instanceof Fires) {
-//                for(Fire fire : fires) {
-//                    fireSize += fire.getSize();
-//                }
-//            }
-//        }
-//        return String.valueOf(fireSize);
-//    }
 
-//    public int getTotalAverageDamage() {
-//        averageBuildingDamage = 0;
-//        for(GameObject go : gameObjects) {
-//            if(go instanceof Buildings) {
-//                for(Building building : buildings) {
-//                    averageBuildingDamage += building.getDamage();
-//                }
-//            }
-//        }
-//        averageBuildingDamage = Math.round(averageBuildingDamage/3);
-//        return averageBuildingDamage;
-//    }
+    public String getFireSize() {
+        fireSize = 0;
+        for(GameObject go : gameObjects) {
+            if(go instanceof Fires) {
+                for(Fire fire : fires) {
+                    fireSize += fire.getSize();
+                }
+            }
+        }
+        return String.valueOf(fireSize);
+    }
 
-//    public String getFinancialLoss() {
-//        financialLoss = 0.0;
-//        for(GameObject go : gameObjects) {
-//            if(go instanceof Buildings) {
-//                for(Building building : buildings) {
-//                    financialLoss += ((building.getDamage())/100.0) *
-//                            building.getValue();
-//                }
-//            }
-//        }
-//        return String.valueOf((int)financialLoss);
-//    }
+    public int getTotalAverageDamage() {
+        averageBuildingDamage = 0;
+        for(GameObject go : gameObjects) {
+            if(go instanceof Buildings) {
+                for(Building building : buildings) {
+                    averageBuildingDamage += building.getDamage();
+                }
+            }
+        }
+        averageBuildingDamage = Math.round(averageBuildingDamage/3);
+        return averageBuildingDamage;
+    }
+
+    public String getFinancialLoss() {
+        financialLoss = 0.0;
+        for(GameObject go : gameObjects) {
+            if(go instanceof Buildings) {
+                for(Building building : buildings) {
+                    financialLoss += ((building.getDamage())/100.0) *
+                            building.getValue();
+                }
+            }
+        }
+        return String.valueOf((int)financialLoss);
+    }
 }

@@ -43,11 +43,13 @@ public class Arc extends GameObject {
     }
 
     @Override
-    protected void localDraw(Graphics g, Point parentOrigin, Point screenOrigin) {
+    protected void localDraw(Graphics g, Point parentOrigin,
+                             Point screenOrigin) {
         g.setColor(getColor());
         containerTranslate(g, parentOrigin);
         cn1ForwardPrimitiveTranslate(g, getDimension());
-        g.drawArc(0, 0, getDimension().getWidth(), getDimension().getHeight()
+        g.drawArc(0, 0, getDimension().getWidth(),
+                getDimension().getHeight()
                 , startAngle, arcAngle);
     }
 }

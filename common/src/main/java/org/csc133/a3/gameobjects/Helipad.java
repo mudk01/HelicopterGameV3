@@ -67,23 +67,12 @@ public class Helipad extends Fixed {
     public Transform getTransform() {
         return myTranslation;
     }
-//
-//    public Point getHelipadCenter() {
-//        return centerLocation;
-//    }
-//
-//    public int getHelipadSize() {
-//        return circleSize;
-//    }
-//
-////    @Override
-//    public void draw(Graphics g, Point containerOrigin) {
-//        g.setColor(color);
-//        g.drawRect(containerOrigin.getX() + rectangleLocation.getX(),
-//                containerOrigin.getY() + rectangleLocation.getY(), boxSize,
-//                boxSize, 5);
-//        g.drawArc(containerOrigin.getX() + centerLocation.getX()-radius,
-//                containerOrigin.getY() + centerLocation.getY()-radius,
-//                circleSize, circleSize, 0, 360);
-//    }
+
+    public int getHelipadBoxSize() {
+        return boxSize;
+    }
+
+    public int getHelipadSize() {
+        return circleSize;
+    }
 }

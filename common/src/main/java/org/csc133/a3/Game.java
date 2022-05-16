@@ -1,7 +1,5 @@
 package org.csc133.a3;
 
-import com.codename1.charts.util.ColorUtil;
-import com.codename1.ui.Display;
 import com.codename1.ui.Form;
 import com.codename1.ui.Graphics;
 import com.codename1.ui.layouts.BorderLayout;
@@ -21,7 +19,6 @@ public class Game extends Form implements Runnable {
     public Game() {
         gw = GameWorld.getInstance();
         mapView = new MapView(gw);
-//        mapView.getStyle().setBgColor(ColorUtil.rgb(0, 0, 0));
         mapView.getStyle().setBgTransparency(255);
         glassCockpit = new GlassCockpit(gw);
         controlCluster = new ControlCluster(gw);
@@ -53,7 +50,6 @@ public class Game extends Form implements Runnable {
     public void run() {
         gw.tick();
         glassCockpit.update();
-        mapView.updateLocalTransforms();
         mapView.repaint();
     }
 }

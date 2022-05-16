@@ -20,11 +20,13 @@ public class Rectangle extends GameObject {
     }
 
     @Override
-    protected void localDraw(Graphics g, Point parentOrigin, Point screenOrigin) {
+    protected void localDraw(Graphics g, Point parentOrigin,
+                             Point screenOrigin) {
         g.setColor(getColor());
         containerTranslate(g, parentOrigin);
         cn1ForwardPrimitiveTranslate(g,getDimension());
-        g.drawRect(0,0,getDimension().getWidth(), getDimension().getHeight());
+        g.drawRect(0,0,getDimension().getWidth(),
+                getDimension().getHeight(),5);
     }
 
     public void setDimensions(Dimension dimension) {

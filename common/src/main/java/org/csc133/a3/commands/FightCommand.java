@@ -15,6 +15,6 @@ public class FightCommand extends Command {
 
     @Override
     public void actionPerformed(ActionEvent evt) {
-//        gw.fightFire();
+        gw.fightFire();
     }
 }
