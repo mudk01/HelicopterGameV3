@@ -483,7 +483,6 @@ public class Helicopter extends Moveable implements Steerable {
                         (-heliLocation.getY()+(worldDim.getHeight() -
                                 worldDim.getHeight()/3)*3-helipadBoxSize +
                                 (riverdim.getHeight()/2)*3));
-        System.err.println(riverCollision);
     }
 
     public boolean checkFireCollision(Fire fire) {
