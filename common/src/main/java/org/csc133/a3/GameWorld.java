@@ -61,10 +61,8 @@ public class GameWorld {
         gameObjects.add(fires);
         gameObjects.add(river);
         gameObjects.add(helipad);
-
         playerHelicopter.setFuel(FUEL);
         gameObjects.add(playerHelicopter);
-
     }
 
     public void tick() {
